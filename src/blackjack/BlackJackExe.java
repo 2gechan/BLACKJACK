@@ -9,8 +9,6 @@ public class BlackJackExe {
 	public static void main(String[] args) {
 		// 게임 실행
 
-		// Card card = new Card();
-
 		// main에서 생성한 객체를 service 클래스에서 사용하기 위해 생성자에 매개변수 넣어주기
 		Service service = new Service();
 
@@ -43,6 +41,7 @@ public class BlackJackExe {
 				 if (pDraw.equals("1")) { // 더 받을지
 					if (cardList.size() > 0) {
 						service.phitCard(cardList);
+						System.out.println("-".repeat(30));
 						service.dCardList();
 						service.pCardList();
 					} else {
@@ -74,6 +73,11 @@ public class BlackJackExe {
 				}
 
 			} // end while
+			try {
+				Thread.sleep(1000);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 			service.whoWin();
 
 			System.out.println("-------------------------------");
