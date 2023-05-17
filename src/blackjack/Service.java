@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Service {
 
-	// main에서 사용하는 객체 사용하기
 	Dealer dealer = new Dealer();
 	Player player = new Player();
 
@@ -14,53 +13,34 @@ public class Service {
 	List<Card> dealerCard = new ArrayList<>();
 
 	// 첫 두장 카드 분배
-	public List<Card> giveCard(List<Card> card) {
+	public void giveCard(List<Card> card) {
 
-		int rnd1 = (int) (Math.random() * card.size());
-		dealer.setCard(card.get(rnd1));
-		dCardSave(card.get(rnd1));
-		dPlus(card.get(rnd1));
-		// 사용한 카드 삭제
-		card.remove(rnd1);
+		dhitCard(card);
+		dhitCard(card);
 
-		int rnd2 = (int) (Math.random() * card.size());
-		dealer.setCard(card.get(rnd2));
-		dCardSave(card.get(rnd2));
-		dPlus(card.get(rnd2));
-		// 사용한 카드 삭제
-		card.remove(rnd2);
-
-		int rnd3 = (int) (Math.random() * card.size());
-		player.setCard(card.get(rnd3));
-		pCardSave(card.get(rnd3));
-		pPlus(card.get(rnd3));
-		// 사용한 카드 삭제
-		card.remove(rnd3);
-
-		int rnd4 = (int) (Math.random() * card.size());
-		player.setCard(card.get(rnd4));
-		pCardSave(card.get(rnd4));
-		pPlus(card.get(rnd4));
-		// 사용한 카드 삭제
-		card.remove(rnd4);
+		phitCard(card);
+		phitCard(card);
 
 		dCardList();
 		pCardList();
 		System.out.println();
 		// 남은 카드 리스트 반환
-		return card;
+
 	}
 
-	public void hitCard(List<Card> card) {
+	public void dhitCard(List<Card> card) {
 		int rnd = (int) (Math.random() * card.size());
-		player.setCard(card.get(rnd));
-		pCardSave(card.get(rnd));
-		pPlus(card.get(rnd));
-		dCardList();
-		pCardList();
-		// 사용한 카드 삭제
+		dCardSave(card.get(rnd));
+		dPlus(card.get(rnd));
 		card.remove(rnd);
 
+	}
+
+	public void phitCard(List<Card> card) {
+		int rnd = (int) (Math.random() * card.size());
+		pCardSave(card.get(rnd));
+		pPlus(card.get(rnd));
+		card.remove(rnd);
 	}
 
 	// 플레이어 카드 보관
@@ -101,17 +81,11 @@ public class Service {
 	// 딜러 카드 17 미만인 경우 실행
 	public void dealerCardcondition(List<Card> card) {
 
-		System.out.println("딜러의 카드 합이 17미만으로 카드 추가");
 		System.out.println("-".repeat(30));
-		int rnd = (int) (Math.random() * card.size());
-		// dealer.setCard(card.get(rnd));
-		dCardSave(card.get(rnd)); // 딜러 카드 리스트 추가
-		dPlus(card.get(rnd));
-		card.remove(rnd);// 뽑힌 카드 덱에서 삭제
-
-		dCardList();
-		pCardList();
-		System.out.println();
+		System.out.println("딜러의 카드 합이 17미만으로 카드 추가");
+		dhitCard(card);
+		dCardOpen();
+		System.out.println("-".repeat(30));
 
 	}
 
@@ -119,30 +93,60 @@ public class Service {
 	public void whoWin() {
 
 		if (dSum > 21) {
-			System.out.println("딜러 21 초과");
+			System.out.println("-".repeat(30));
+			dCardOpen();
+			pCardList();
+			System.out.println("딜러 점수 : " + dSum);
+			System.out.println("딜러 21 초과, 플레이어 승");
+			player.setWinCount();
 		} else if (pSum > 21) {
-			System.out.println("플레이어 21 초과");
+			System.out.println("-".repeat(30));
+			dCardOpen();
+			pCardList();
+			System.out.println("플레이어 점수 : " + pSum);
+			System.out.println("플레이어 21 초과, 딜러 승");
+			dealer.setWinCount();
 		} else if (dSum > pSum) {
+			System.out.println("-".repeat(30));
+			dCardOpen();
+			pCardList();
 			System.out.println("딜러 점수 : " + dSum);
 			System.out.println("플레이어 점수 : " + pSum);
 			System.out.println("딜러 승");
+			dealer.setWinCount();
 		} else if (dSum < pSum) {
+			System.out.println("-".repeat(30));
+			dCardOpen();
+			pCardList();
 			System.out.println("딜러 점수 : " + dSum);
 			System.out.println("플레이어 점수 : " + pSum);
 			System.out.println("플레이어 승");
+			player.setWinCount();
 		} else {
 			System.out.println("무승부");
+			dCardOpen();
+			pCardList();
 		}
 		// 승패 결정 후 갖고 있던 카드 점수 합 초기화
 		dSum = 0;
 		pSum = 0;
 	}
 
-	public void dCardList() {
+	public void dCardOpen() {
 		System.out.println("딜러 카드 리스트");
 		for (Card card : dealerCard) {
 			System.out.print(card.getPattern() + "-");
 			System.out.print(card.getNumber() + "\t");
+		}
+		System.out.println();
+	}
+
+	public void dCardList() {
+		System.out.println("딜러 카드 리스트");
+		System.out.print("?\t");
+		for (int i = 1; i < dealerCard.size(); i++) {
+			System.out.print(dealerCard.get(i).getPattern() + "-");
+			System.out.print(dealerCard.get(i).getNumber() + "\t");
 		}
 		System.out.println();
 	}
@@ -161,9 +165,9 @@ public class Service {
 		playerCard = new ArrayList<>();
 		dealerCard = new ArrayList<>();
 	}
-	
+
 	public void clearScreen() {
-		for(int i=0; i<15; i++) {
+		for (int i = 0; i < 15; i++) {
 			System.out.println();
 		}
 	}

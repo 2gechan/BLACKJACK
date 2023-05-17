@@ -28,24 +28,6 @@ public class BlackJackExe {
 			// 플레이어가 원하면 한장을 받는 method
 			while (true) {
 
-				// 딜러 카드 17미만일 경우 카드를 한장 더 받는 method
-				// 17카드를 계속 받더라도 17이 넘지 않으면 딜러, 플레이어 순으로 계속 카드를 뽑는다.
-				if (service.dSum < 17) {
-					if (cardList.size() > 1) {
-						
-						service.dealerCardcondition(cardList);
-					} else {
-						System.out.println("남은 카드가 없어, 더이상 카드를 뽑을 수 없습니다.");
-						break;
-					}
-				}
-				// else if문을 사용할 시 한장을 더 받은 후 21이 초과 되도
-				// else if문이 실행이 되지 않기 때문에 if문으로 각각 구분
-				if (service.dSum > 21) {
-					// 17이상 21미만이면 더이상 받지 않고 while 탈출
-					break;
-				}
-
 				// 플레이어는 1을 입력하면 카드를 한장 더 뽑고, 2를 입력할 경우 멈춘다
 
 				System.out.println("draw : 1 | stop : 2");
@@ -60,7 +42,9 @@ public class BlackJackExe {
 				}
 				 if (pDraw.equals("1")) { // 더 받을지
 					if (cardList.size() > 0) {
-						service.hitCard(cardList);
+						service.phitCard(cardList);
+						service.dCardList();
+						service.pCardList();
 					} else {
 						System.out.println("남은 카드가 없어, 더이상 카드를 뽑을 수 없습니다.");
 						break;
@@ -70,6 +54,11 @@ public class BlackJackExe {
 						if (service.dSum < 17) {
 							if (cardList.size() > 1) {
 								service.dealerCardcondition(cardList);
+								try {
+									Thread.sleep(1000);
+								} catch (Exception e) {
+									// TODO: handle exception
+								}
 							} else {
 								System.out.println("남은 카드가 없어, 더이상 카드를 뽑을 수 없습니다.");
 								break;
@@ -105,6 +94,9 @@ public class BlackJackExe {
 
 		}
 
+		System.out.println("딜러 승리 횟수 : " + service.dealer.getWinCount());
+		System.out.println("플레이어 승리 횟수 : " + service.player.getWinCount());
+		
 		scan.close();
 
 	}
