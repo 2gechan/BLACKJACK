@@ -28,7 +28,6 @@ public class BlackJackExe {
 			
 			service.giveCard(cardList); // 첫 두장 받기
 
-			// 플레이어가 원하면 한장을 받는 method
 			while (true) {
 
 				// 플레이어는 1을 입력하면 카드를 한장 더 뽑고, 2를 입력할 경우 멈춘다
@@ -55,7 +54,7 @@ public class BlackJackExe {
 						break;
 					}
 				} else if (pDraw.equals("2")) { // 멈출지
-					while (true) { // 플레이어가 그만 받더라도 딜러가 17미만이면 드로우
+					while (true) { // 플레이어가 그만 받게되면 딜러의 점수를 확인하고, 17미만이면 드로우
 						if (service.dSum < 17) {
 							if (cardList.size() > 1) {
 								service.dealerCardcondition(cardList);
@@ -88,8 +87,8 @@ public class BlackJackExe {
 			service.whoWin();
 
 			System.out.println("-------------------------------");
-			System.out.println("종료 : Q | 계속 : 아무 key 입력");
-			if (scan.nextLine().equals("Q")) {
+			System.out.println("종료 : QUIT | 계속 : 아무 key 입력");
+			if (scan.nextLine().equals("QUIT")) {
 				break;
 			}
 
