@@ -7,6 +7,7 @@ import java.util.Scanner;
 import blackjack.card.Card;
 import blackjack.card.Deck;
 import blackjack.service.Service;
+import blackjack.utils.AnsiConsol;
 
 public class BlackJackExe {
 
@@ -24,19 +25,19 @@ public class BlackJackExe {
 
 		Scanner scan = new Scanner(System.in);
 		while (true) {
-			System.out.println("--------------게임 시작--------------");
+			System.out.println(AnsiConsol.CYAN("--------------게임 시작--------------"));
 			
 			service.giveCard(cardList); // 첫 두장 받기
 
 			while (true) {
 
 				// 플레이어는 1을 입력하면 카드를 한장 더 뽑고, 2를 입력할 경우 멈춘다
-				System.out.println("draw : 1 | stop : 2");
+				System.out.print(AnsiConsol.GREEN("draw : 1 | stop : 2 >> "));
 				String pDraw = "";
 				while (true) {
 					pDraw = scan.nextLine();
 					if (!(pDraw.equals("1") || pDraw.equals("2"))) {
-						System.out.println("1 또는 2만 입력하세요.");
+						System.out.println(AnsiConsol.GREEN("1 또는 2만 입력하세요."));
 					} else {
 						break;
 					}
@@ -45,12 +46,12 @@ public class BlackJackExe {
 					
 					if (cardList.size() > 0) {
 						service.phitCard(cardList);
-						System.out.println("-".repeat(30));
+						System.out.println(AnsiConsol.BLUE("-".repeat(30)));
 						service.dCardList();
 						service.pCardList();
 					} else {
-						System.out.println("남은 카드 개수 : " + cardList.size());
-						System.out.println("남은 카드가 없어, 더이상 카드를 뽑을 수 없습니다.");
+						System.out.println(AnsiConsol.RED("남은 카드 개수 : ") + cardList.size());
+						System.out.println(AnsiConsol.RED("남은 카드가 없어, 더이상 카드를 뽑을 수 없습니다."));
 						break;
 					}
 				} else if (pDraw.equals("2")) { // 멈출지
@@ -64,8 +65,8 @@ public class BlackJackExe {
 									// TODO: handle exception
 								}
 							} else {
-								System.out.println("남은 카드 개수 : " + cardList.size());
-								System.out.println("남은 카드가 없어, 더이상 카드를 뽑을 수 없습니다.");
+								System.out.println(AnsiConsol.RED("남은 카드 개수 : ") + cardList.size());
+								System.out.println(AnsiConsol.RED("남은 카드가 없어, 더이상 카드를 뽑을 수 없습니다."));
 								break;
 							}
 						} else {
@@ -86,17 +87,17 @@ public class BlackJackExe {
 			}
 			service.whoWin();
 
-			System.out.println("-------------------------------");
-			System.out.println("종료 : QUIT | 계속 : 아무 key 입력");
+			System.out.println(AnsiConsol.BLUE("-".repeat(30)));
+			System.out.println(AnsiConsol.GREEN("종료 : QUIT | 계속 : 아무 key 입력"));
 			if (scan.nextLine().equals("QUIT")) {
 				break;
 			}
 
 			// 카드가 4장이상 남아야지 게임진행이 가능
 			if (cardList.size() < 4) {
-				System.out.println("남은 카드 개수 : " + cardList.size());
-				System.out.println("게임 진행에 필요한 카드가 부족하여 종료합니다.");
-				System.out.println("-------------------------------");
+				System.out.println(AnsiConsol.RED("남은 카드 개수 : ") + cardList.size());
+				System.out.println(AnsiConsol.RED("게임 진행에 필요한 카드가 부족하여 종료합니다."));
+				System.out.println(AnsiConsol.BLUE("-".repeat(30)));
 				break;
 			}
 			// 승패 결정 후 플레이어와 딜러의 카드 리스트 리셋
