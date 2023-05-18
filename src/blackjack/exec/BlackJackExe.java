@@ -1,8 +1,12 @@
-package blackjack;
+package blackjack.exec;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import blackjack.card.Card;
+import blackjack.card.Deck;
+import blackjack.service.Service;
 
 public class BlackJackExe {
 
@@ -21,30 +25,32 @@ public class BlackJackExe {
 		Scanner scan = new Scanner(System.in);
 		while (true) {
 			System.out.println("--------------게임 시작--------------");
+			
 			service.giveCard(cardList); // 첫 두장 받기
 
 			// 플레이어가 원하면 한장을 받는 method
 			while (true) {
 
 				// 플레이어는 1을 입력하면 카드를 한장 더 뽑고, 2를 입력할 경우 멈춘다
-
 				System.out.println("draw : 1 | stop : 2");
 				String pDraw = "";
-				while(true) {
+				while (true) {
 					pDraw = scan.nextLine();
 					if (!(pDraw.equals("1") || pDraw.equals("2"))) {
 						System.out.println("1 또는 2만 입력하세요.");
-					}else {
+					} else {
 						break;
 					}
 				}
-				 if (pDraw.equals("1")) { // 더 받을지
+				if (pDraw.equals("1")) { // 더 받을지
+					
 					if (cardList.size() > 0) {
 						service.phitCard(cardList);
 						System.out.println("-".repeat(30));
 						service.dCardList();
 						service.pCardList();
 					} else {
+						System.out.println("남은 카드 개수 : " + cardList.size());
 						System.out.println("남은 카드가 없어, 더이상 카드를 뽑을 수 없습니다.");
 						break;
 					}
@@ -59,6 +65,7 @@ public class BlackJackExe {
 									// TODO: handle exception
 								}
 							} else {
+								System.out.println("남은 카드 개수 : " + cardList.size());
 								System.out.println("남은 카드가 없어, 더이상 카드를 뽑을 수 없습니다.");
 								break;
 							}
@@ -88,8 +95,9 @@ public class BlackJackExe {
 
 			// 카드가 4장이상 남아야지 게임진행이 가능
 			if (cardList.size() < 4) {
-				System.out.println("덱에 남은 카드 부족");
-				System.out.println("------ 종료 ------");
+				System.out.println("남은 카드 개수 : " + cardList.size());
+				System.out.println("게임 진행에 필요한 카드가 부족하여 종료합니다.");
+				System.out.println("-------------------------------");
 				break;
 			}
 			// 승패 결정 후 플레이어와 딜러의 카드 리스트 리셋
@@ -100,7 +108,7 @@ public class BlackJackExe {
 
 		System.out.println("딜러 승리 횟수 : " + service.dealer.getWinCount());
 		System.out.println("플레이어 승리 횟수 : " + service.player.getWinCount());
-		
+
 		scan.close();
 
 	}

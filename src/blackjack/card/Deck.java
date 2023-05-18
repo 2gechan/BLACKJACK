@@ -1,7 +1,9 @@
-package blackjack;
+package blackjack.card;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import blackjack.utils.AnsiConsol;
 
 public class Deck {
 	
@@ -12,16 +14,17 @@ public class Deck {
 			Card card = new Card();
 			switch (i % 4) {
 			case 0:
-				card.setPattern("♡");
+				
+				card.setPattern(AnsiConsol.RED("♥"));
 				break;
 			case 1:
-				card.setPattern("◇");
+				card.setPattern(AnsiConsol.BLUE("◆"));
 				break;
 			case 2:
-				card.setPattern("♠");
+				card.setPattern(AnsiConsol.YELLOW("♠"));
 				break;
 			case 3:
-				card.setPattern("♣");
+				card.setPattern(AnsiConsol.PURPLE("♣"));
 				break;
 			}
 

@@ -1,12 +1,16 @@
-package blackjack;
+package blackjack.service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import blackjack.card.Card;
+import blackjack.user.Dealer;
+import blackjack.user.Player;
+
 public class Service {
 
-	Dealer dealer = new Dealer();
-	Player player = new Player();
+	public Dealer dealer = new Dealer();
+	public Player player = new Player();
 
 	// 플레이어와 딜러가 가지고 있는 카드 리스트
 	List<Card> playerCard = new ArrayList<>();
@@ -53,8 +57,8 @@ public class Service {
 		dealerCard.add(card);
 	}
 
-	int pSum = 0;
-	int dSum = 0;
+	public int pSum = 0;
+	public int dSum = 0;
 
 	// 딜러 카드 합
 	public void dPlus(Card card) {
