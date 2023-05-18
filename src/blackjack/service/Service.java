@@ -17,13 +17,13 @@ public class Service {
 	List<Card> dealerCard = new ArrayList<>();
 
 	// 첫 두장 카드 분배
-	public void giveCard(List<Card> card) {
+	public void giveCard(List<Card> cardList) {
 
-		dhitCard(card);
-		dhitCard(card);
+		dhitCard(cardList);
+		dhitCard(cardList);
 
-		phitCard(card);
-		phitCard(card);
+		phitCard(cardList);
+		phitCard(cardList);
 
 		dCardList();
 		pCardList();
@@ -32,19 +32,19 @@ public class Service {
 
 	}
 
-	public void dhitCard(List<Card> card) {
-		int rnd = (int) (Math.random() * card.size());
-		dCardSave(card.get(rnd));
-		dPlus(card.get(rnd));
-		card.remove(rnd);
+	public void dhitCard(List<Card> cardList) {
+		int rnd = (int) (Math.random() * cardList.size());
+		dCardSave(cardList.get(rnd));
+		dPlus(cardList.get(rnd));
+		cardList.remove(rnd);
 
 	}
 
-	public void phitCard(List<Card> card) {
-		int rnd = (int) (Math.random() * card.size());
-		pCardSave(card.get(rnd));
-		pPlus(card.get(rnd));
-		card.remove(rnd);
+	public void phitCard(List<Card> cardList) {
+		int rnd = (int) (Math.random() * cardList.size());
+		pCardSave(cardList.get(rnd));
+		pPlus(cardList.get(rnd));
+		cardList.remove(rnd);
 	}
 
 	// 플레이어 카드 보관
@@ -83,11 +83,11 @@ public class Service {
 	}
 
 	// 딜러 카드 17 미만인 경우 실행
-	public void dealerCardcondition(List<Card> card) {
+	public void dealerCardcondition(List<Card> cardList) {
 
 		System.out.println("-".repeat(30));
 		System.out.println("딜러의 카드 합이 17미만으로 카드 추가");
-		dhitCard(card);
+		dhitCard(cardList);
 		dCardOpen();
 		System.out.println("-".repeat(30));
 
