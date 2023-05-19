@@ -4,11 +4,19 @@ import java.util.List;
 
 import blackjack.card.Card;
 
-public class Dealer {
+public class Dealer implements User {
 	
 	private int winCount = 0;
+	private int score = 0;
 	private List<Card> dealerCard;
-	
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
 
 	public List<Card> getDealerCard() {
 		return dealerCard;
@@ -26,7 +34,7 @@ public class Dealer {
 		return winCount;
 	}
 
-	public void setWinCount() {
+	public void WinCount() {
 		this.winCount += 1;
 	}
 }

@@ -19,11 +19,10 @@ public class Service {
 
 	// 첫 두장 카드 분배
 	public void giveCard(List<Card> cardList) {
-
 		dhitCard(cardList);
-		dhitCard(cardList);
-
 		phitCard(cardList);
+
+		dhitCard(cardList);
 		phitCard(cardList);
 
 		dCardList();
@@ -34,11 +33,9 @@ public class Service {
 	}
 
 	public void dhitCard(List<Card> cardList) {
-		int rnd = (int) (Math.random() * cardList.size());
-		dCardSave(cardList.get(rnd));
-		dPlus(cardList.get(rnd));
-		cardList.remove(rnd);
-
+		dCardSave(cardList.get(0));
+		dPlus(cardList.get(0));
+		cardList.remove(0);
 	}
 
 	public void phitCard(List<Card> cardList) {
@@ -103,14 +100,14 @@ public class Service {
 			pCardList();
 			System.out.println(AnsiConsol.CYAN("딜러 점수 : ") + dSum);
 			System.out.println(AnsiConsol.YELLOW("딜러 21 초과, 플레이어 승"));
-			player.setWinCount();
+			player.WinCount();
 		} else if (pSum > 21) {
 			System.out.println(AnsiConsol.BLUE("-".repeat(30)));
 			dCardOpen();
 			pCardList();
 			System.out.println(AnsiConsol.PURPLE("플레이어 점수 : ") + pSum);
 			System.out.println(AnsiConsol.CYAN("플레이어 21 초과, 딜러 승"));
-			dealer.setWinCount();
+			dealer.WinCount();
 		} else if (dSum > pSum) {
 			System.out.println(AnsiConsol.BLUE("-".repeat(30)));
 			dCardOpen();
@@ -118,7 +115,7 @@ public class Service {
 			System.out.println(AnsiConsol.CYAN("딜러 점수 : ") + dSum);
 			System.out.println(AnsiConsol.PURPLE("플레이어 점수 : ") + pSum);
 			System.out.println(AnsiConsol.CYAN("딜러 승"));
-			dealer.setWinCount();
+			dealer.WinCount();
 		} else if (dSum < pSum) {
 			System.out.println(AnsiConsol.BLUE("-".repeat(30)));
 			dCardOpen();
@@ -126,7 +123,7 @@ public class Service {
 			System.out.println(AnsiConsol.CYAN("딜러 점수 : ") + dSum);
 			System.out.println(AnsiConsol.PURPLE("플레이어 점수 : ") + pSum);
 			System.out.println(AnsiConsol.PURPLE("플레이어 승"));
-			player.setWinCount();
+			player.WinCount();
 		} else {
 			System.out.println(AnsiConsol.BLACK("무승부"));
 			dCardOpen();
