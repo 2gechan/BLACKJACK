@@ -1,79 +1,34 @@
 package blackjack.card;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import blackjack.utils.AnsiConsol;
-
 public class Deck {
+
+	List<Card> cardList = new ArrayList<>();
 	
 	public List<Card> makeCard() {
-
-		List<Card> cardList = new ArrayList<>();
-		for (int i = 0; i < 52; i++) {
-			Card card = new Card();
-			switch (i % 4) {
-			case 0:
-				
-				card.setPattern(AnsiConsol.RED("♥"));
-				break;
-			case 1:
-				card.setPattern(AnsiConsol.BLUE("◆"));
-				break;
-			case 2:
-				card.setPattern(AnsiConsol.YELLOW("♠"));
-				break;
-			case 3:
-				card.setPattern(AnsiConsol.PURPLE("♣"));
-				break;
+		String[] pattern = { "◇", "♡", "♠", "♣" };
+		String[] number = { "A", "2", "3", "4", "5", "6", 
+				"7", "8", "9", "10", "J", "Q", "K" };
+		for (int i = 0; i < pattern.length; i++) {
+			for (int j = 0; j < number.length; j++) {
+				Card card = new Card();
+				card.setPattern(pattern[i]);
+				card.setNumber(number[j]);
+				cardList.add(card);
 			}
 
-			switch (i % 13) {
-			case 1:
-				card.setNumber("A");
-				break;
-			case 2:
-				card.setNumber("2");
-				break;
-			case 3:
-				card.setNumber("3");
-				break;
-			case 4:
-				card.setNumber("4");
-				break;
-			case 5:
-				card.setNumber("5");
-				break;
-			case 6:
-				card.setNumber("6");
-				break;
-			case 7:
-				card.setNumber("7");
-				break;
-			case 8:
-				card.setNumber("8");
-				break;
-			case 9:
-				card.setNumber("9");
-				break;
-			case 10:
-				card.setNumber("10");
-				break;
-			case 11:
-				card.setNumber("J");
-				break;
-			case 12:
-				card.setNumber("Q");
-				break;
-			case 0:
-				card.setNumber("K");
-				break;
-			}
-			cardList.add(card);
 		}
-
+		shuffleList();
 		return cardList;
-
-	} // makeCard() end
+	}
+	
+	public void shuffleList() {
+		for(int i = 0; i < 10; i++) {
+			Collections.shuffle(cardList);
+		}
+	}
 
 }

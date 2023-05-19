@@ -17,6 +17,11 @@ public class Card {
 		this.number = number;
 	}
 	
+	@Override
+	public String toString() {
+		return "Card [pattern=" + pattern + ", number=" + number + "]";
+	}
+	
 	
 
 }

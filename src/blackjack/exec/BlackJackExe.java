@@ -11,22 +11,18 @@ import blackjack.utils.AnsiConsol;
 
 public class BlackJackExe {
 
-	public static void main(String[] args) {
+	public void gameStart() {
 		// 게임 실행
-
-		// main에서 생성한 객체를 service 클래스에서 사용하기 위해 생성자에 매개변수 넣어주기
 		Service service = new Service();
 
-		// 카드들을 보관하기 위한 List 생성
 		List<Card> cardList = new ArrayList<>();
-		// 카드객체들을 사용하여 List에 저장
 		Deck deck = new Deck();
 		cardList = deck.makeCard();
-
+		
 		Scanner scan = new Scanner(System.in);
 		while (true) {
 			System.out.println(AnsiConsol.CYAN("--------------게임 시작--------------"));
-			
+
 			service.giveCard(cardList); // 첫 두장 받기
 
 			while (true) {
@@ -43,7 +39,7 @@ public class BlackJackExe {
 					}
 				}
 				if (pDraw.equals("1")) { // 더 받을지
-					
+
 					if (cardList.size() > 0) {
 						service.phitCard(cardList);
 						System.out.println(AnsiConsol.BLUE("-".repeat(30)));
@@ -112,5 +108,4 @@ public class BlackJackExe {
 		scan.close();
 
 	}
-
 }
