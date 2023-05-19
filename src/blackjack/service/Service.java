@@ -9,169 +9,107 @@ import blackjack.user.Player;
 import blackjack.utils.AnsiConsol;
 
 public class Service {
-
-	public Dealer dealer = new Dealer();
-	public Player player = new Player();
-
+	Print print = new Print();
 	// 플레이어와 딜러가 가지고 있는 카드 리스트
-	List<Card> playerCard = new ArrayList<>();
-	List<Card> dealerCard = new ArrayList<>();
-
+	
 	// 첫 두장 카드 분배
-	public void giveCard(List<Card> cardList) {
-		dhitCard(cardList);
-		phitCard(cardList);
+	public void giveCard(List<Card> cardList, Dealer dealer, Player player) {
+		dhitCard(cardList, dealer, player);
+		phitCard(cardList, dealer, player);
 
-		dhitCard(cardList);
-		phitCard(cardList);
+		dhitCard(cardList, dealer, player);
+		phitCard(cardList, dealer, player);
 
-		dCardList();
-		pCardList();
+		cardOpen(dealer, player);
 		System.out.println();
 		// 남은 카드 리스트 반환
 
 	}
 
-	public void dhitCard(List<Card> cardList) {
-		dCardSave(cardList.get(0));
-		dPlus(cardList.get(0));
+	public void dhitCard(List<Card> cardList, Dealer dealer, Player player) {
+		dCardSave(cardList.get(0), dealer);
+		dPlus(cardList.get(0), dealer);
+		print.printCard(dealer, player);
 		cardList.remove(0);
 	}
 
-	public void phitCard(List<Card> cardList) {
-		int rnd = (int) (Math.random() * cardList.size());
-		pCardSave(cardList.get(rnd));
-		pPlus(cardList.get(rnd));
-		cardList.remove(rnd);
+	public void phitCard(List<Card> cardList,Dealer dealer, Player player) {
+		pCardSave(cardList.get(0), player);
+		pPlus(cardList.get(0), player);
+		print.printCard(dealer, player);
+		cardList.remove(0);
 	}
 
 	// 플레이어 카드 보관
-	public void pCardSave(Card card) {
-		playerCard.add(card);
+	public void pCardSave(Card card, Player player) {
+		player.playerCard.add(card);
 	}
 
 	// 딜러 카드 보관
-	public void dCardSave(Card card) {
-		dealerCard.add(card);
+	public void dCardSave(Card card, Dealer dealer) {
+		dealer.dealerCard.add(card);
 	}
 
-	public int pSum = 0;
-	public int dSum = 0;
-
 	// 딜러 카드 합
-	public void dPlus(Card card) {
+	public void dPlus(Card card, Dealer dealer) {
 		if (card.getNumber().equals("A")) {
-			dSum += 1;
+			dealer.score += 1;
 		} else if (card.getNumber().equals("J") || card.getNumber().equals("Q") || card.getNumber().equals("K")) {
-			dSum += 10;
+			dealer.score += 10;
 		} else {
-			dSum += Integer.valueOf(card.getNumber());
+			dealer.score += Integer.valueOf(card.getNumber());
 		}
 	}
 
 	// 플레이어 카드 합
-	public void pPlus(Card card) {
+	public void pPlus(Card card, Player player) {
 		if (card.getNumber().equals("A")) {
-			pSum += 1;
+			player.score += 1;
 		} else if (card.getNumber().equals("J") || card.getNumber().equals("Q") || card.getNumber().equals("K")) {
-			pSum += 10;
+			player.score += 10;
 		} else {
-			pSum += Integer.valueOf(card.getNumber());
+			player.score += Integer.valueOf(card.getNumber());
 		}
 	}
 
-	// 딜러 카드 17 미만인 경우 실행
-	public void dealerCardcondition(List<Card> cardList) {
-
-		System.out.println(AnsiConsol.BLUE("-".repeat(30)));
-		System.out.println(AnsiConsol.CYAN("딜러의 카드 합이 17미만으로 카드 추가"));
-		dhitCard(cardList);
-		dCardOpen();
-		System.out.println(AnsiConsol.BLUE("-".repeat(30)));
-
-	}
-
 	// 각각 카드의 점수 합을 구한 후 승패 결정
-	public void whoWin() {
+	public void whoWin(Dealer dealer, Player player) {
 
-		if (dSum > 21) {
-			System.out.println(AnsiConsol.BLUE("-".repeat(30)));
-			dCardOpen();
-			pCardList();
-			System.out.println(AnsiConsol.CYAN("딜러 점수 : ") + dSum);
+		if (dealer.score > 21) {
+			print.scorePrint(dealer, player);
 			System.out.println(AnsiConsol.YELLOW("딜러 21 초과, 플레이어 승"));
 			player.WinCount();
-		} else if (pSum > 21) {
-			System.out.println(AnsiConsol.BLUE("-".repeat(30)));
-			dCardOpen();
-			pCardList();
-			System.out.println(AnsiConsol.PURPLE("플레이어 점수 : ") + pSum);
-			System.out.println(AnsiConsol.CYAN("플레이어 21 초과, 딜러 승"));
+		} else if (player.score > 21) {
+			print.scorePrint(dealer, player);
+			System.out.println(AnsiConsol.PURPLE("플레이어 21 초과, 딜러 승"));
 			dealer.WinCount();
-		} else if (dSum > pSum) {
-			System.out.println(AnsiConsol.BLUE("-".repeat(30)));
-			dCardOpen();
-			pCardList();
-			System.out.println(AnsiConsol.CYAN("딜러 점수 : ") + dSum);
-			System.out.println(AnsiConsol.PURPLE("플레이어 점수 : ") + pSum);
-			System.out.println(AnsiConsol.CYAN("딜러 승"));
+		} else if (dealer.score > player.score) {
+			print.scorePrint(dealer, player);
+			System.out.println(AnsiConsol.PURPLE("딜러 승"));
 			dealer.WinCount();
-		} else if (dSum < pSum) {
-			System.out.println(AnsiConsol.BLUE("-".repeat(30)));
-			dCardOpen();
-			pCardList();
-			System.out.println(AnsiConsol.CYAN("딜러 점수 : ") + dSum);
-			System.out.println(AnsiConsol.PURPLE("플레이어 점수 : ") + pSum);
+		} else if (dealer.score < player.score) {
+			print.scorePrint(dealer, player);
 			System.out.println(AnsiConsol.PURPLE("플레이어 승"));
 			player.WinCount();
 		} else {
 			System.out.println(AnsiConsol.BLACK("무승부"));
-			dCardOpen();
-			pCardList();
+			dealer.dCardOpen();
+			cardOpen(dealer, player);
 		}
 		// 승패 결정 후 갖고 있던 카드 점수 합 초기화
-		dSum = 0;
-		pSum = 0;
+		dealer.score = 0;
+		player.score = 0;
 	}
 
-	public void dCardOpen() {
-		System.out.println(AnsiConsol.GREEN("딜러 카드 리스트"));
-		for (Card card : dealerCard) {
-			System.out.print(card.getPattern() + "-");
-			System.out.print(card.getNumber() + "\t");
-		}
-		System.out.println();
-	}
-
-	public void dCardList() {
-		System.out.println(AnsiConsol.GREEN("딜러 카드 리스트"));
-		System.out.print("?\t");
-		for (int i = 1; i < dealerCard.size(); i++) {
-			System.out.print(dealerCard.get(i).getPattern() + "-");
-			System.out.print(dealerCard.get(i).getNumber() + "\t");
-		}
-		System.out.println();
-	}
-
-	public void pCardList() {
-		System.out.println(AnsiConsol.YELLOW("플레이어 카드 리스트"));
-		for (Card card : playerCard) {
-			System.out.print(card.getPattern() + "-");
-			System.out.print(card.getNumber() + "\t");
-		}
-		System.out.println();
+	public void cardOpen (Dealer dealer, Player player) {
+		dealer.dCardOpen();
+		player.pCardOpen();
 	}
 
 	// 손에 쥐고 있는 패 버리기
-	public void resetList() {
-		playerCard = new ArrayList<>();
-		dealerCard = new ArrayList<>();
-	}
-
-	public void clearScreen() {
-		for (int i = 0; i < 15; i++) {
-			System.out.println();
-		}
+	public void resetList(Dealer dealer, Player player) {
+		player.playerCard = new ArrayList<>();
+		dealer.dealerCard = new ArrayList<>();
 	}
 
 }

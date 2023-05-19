@@ -8,6 +8,8 @@ import blackjack.card.Card;
 import blackjack.card.Deck;
 import blackjack.service.Print;
 import blackjack.service.Service;
+import blackjack.user.Dealer;
+import blackjack.user.Player;
 import blackjack.utils.AnsiConsol;
 
 public class BlackJackExe {
@@ -16,16 +18,18 @@ public class BlackJackExe {
 		// 게임 실행
 		Service service = new Service();
 		Print print = new Print();
+		Dealer dealer = new Dealer();
+		Player player = new Player();
 
 		List<Card> cardList = new ArrayList<>();
 		Deck deck = new Deck();
 		cardList = deck.makeCard();
-		
+
 		Scanner scan = new Scanner(System.in);
 		while (true) {
 			System.out.println(AnsiConsol.CYAN("--------------게임 시작--------------"));
 
-			service.giveCard(cardList); // 첫 두장 받기
+			service.giveCard(cardList, dealer, player); // 첫 두장 받기
 
 			while (true) {
 
@@ -43,24 +47,21 @@ public class BlackJackExe {
 				if (pDraw.equals("1")) { // 더 받을지
 
 					if (cardList.size() > 0) {
-						service.phitCard(cardList);
+						service.phitCard(cardList, dealer, player);
 						System.out.println(AnsiConsol.BLUE("-".repeat(30)));
-						service.dCardList();
-						service.pCardList();
+						service.cardOpen(dealer, player);
 					} else {
 						print.emptyCard(cardList);
 						break;
 					}
 				} else if (pDraw.equals("2")) { // 멈출지
-					while (true) { 
-						if (service.dSum < 17) {
+					while (true) {
+						if (dealer.score < 17) {
 							if (cardList.size() > 1) {
-								service.dealerCardcondition(cardList);
-								try {
-									Thread.sleep(1000);
-								} catch (Exception e) {
-									// TODO: handle exception
-								}
+								System.out.println(AnsiConsol.BLUE("-".repeat(30)));
+								System.out.println(AnsiConsol.CYAN("딜러의 카드 합이 17미만으로 카드 추가"));
+								service.dhitCard(cardList, dealer, player);
+								dealer.dCardOpen();
 							} else {
 								print.emptyCard(cardList);
 								break;
@@ -71,17 +72,12 @@ public class BlackJackExe {
 					}
 					break;
 				}
-				if (service.pSum > 21) {
+				if (player.score > 21) {
 					break;
 				}
 
 			} // end while
-			try {
-				Thread.sleep(1000);
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-			service.whoWin();
+			service.whoWin(dealer, player);
 
 			System.out.println(AnsiConsol.BLUE("-".repeat(30)));
 			System.out.println(AnsiConsol.GREEN("종료 : QUIT | 계속 : 아무 key 입력"));
@@ -97,13 +93,13 @@ public class BlackJackExe {
 				break;
 			}
 			// 승패 결정 후 플레이어와 딜러의 카드 리스트 리셋
-			service.resetList();
-			service.clearScreen();
+			service.resetList(dealer, player);
+			AnsiConsol.CLEAR();
 
 		}
 
-		System.out.println("딜러 승리 횟수 : " + service.dealer.getWinCount());
-		System.out.println("플레이어 승리 횟수 : " + service.player.getWinCount());
+		System.out.println("딜러 승리 횟수 : " + dealer.getWinCount());
+		System.out.println("플레이어 승리 횟수 : " + player.getWinCount());
 
 		scan.close();
 
